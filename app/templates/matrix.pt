@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Display matrix</title>
+    </head>
+    <body>
+        <div id="container">
+            <table>
+                <tr tal:repeat="row table">
+                    <td tal:repeat="item row">
+                        ${item}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
