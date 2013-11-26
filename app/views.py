@@ -22,3 +22,7 @@ def matrix(request):
 
     #return {'table': [['a', 'b'], ['c', 'd'], ['e', 'f']]}
     return {'table': table}
+    
+@view_config(route_name='files', renderer='templates/filemanager.pt')
+def files(request):
+    return {'files': ['kuva1.jpg', 'kuva2.jpg', 'mainos3.jpg',]}

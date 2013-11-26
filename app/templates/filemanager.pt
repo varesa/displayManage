@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kuvien hallinta</title>
+        <link rel="stylesheet" type="text/css" href="/static/common.css">
+        <style type="text/css">
+
+
+            #title {
+
+            }
+
+            #actions {
+                display: block;
+                height: 32px;
+                width: 100%;
+                line-height: 32px;
+
+                margin: 0 -15px 0 -15px;
+                padding: 4px 15px 4px 18px;
+
+                background-color: #e4e4f0;
+            }
+
+            #files {
+
+            }
+
+            #upload {
+                display: block;
+                visibility: hidden;
+                position: fixed;
+                width: 600px;
+                height: 400px;
+            }
+
+            .button {
+                display: block;
+                box-sizing: border-box;
+                float: left;
+
+                height: 100%;
+                padding: 0 6px 0 6px;
+                vertical-align: middle;
+
+                border-radius: 6px;
+                margin-right: 10px;
+
+                background-color: #8c8c8c;
+
+                cursor: pointer;
+            }
+        </style>
+        <script type="text/javascript">
+            function deletePics() {
+
+            }
+
+            function uploadPics() {
+
+            }
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="title"><h2>Kuvien hallinta</h2></div>
+            <div id="actions">
+                <div id="add" class="button" onclick="uploadPics()">Lisää kuvia</div>
+                <div id="remove" class="button" onclick="deletePics()">Poista valitut</div>
+            </div>
+            <br><br>
+            <div id="files">
+                <table>
+                    <tr tal:repeat="filename files">
+                        <td><input type="checkbox" name="remove_${filename}" id="cb_${filename}"></td><td><label for="cb_${filename}">${filename}</label></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="upload"></div>
+    </body>
+</html>
