@@ -8,11 +8,47 @@ html, body {
     display: block;
     box-sizing: border-box;
 
-    width: 960px;
+    max-width: 960px;
+    width: 100%;
     height: 100%;
 
     padding: 15px;
     margin: 0px auto 0px auto;
 
     background-color: #eeeeee;
+}
+
+
+#title {
+
+}
+
+#actions {
+    display: block;
+    height: 32px;
+    width: 100%;
+    line-height: 32px;
+
+    margin: 0 -15px 0 -15px;
+    padding: 4px 15px 4px 18px;
+
+    background-color: #e4e4f0;
+}
+
+
+.button {
+    display: block;
+    box-sizing: border-box;
+    float: left;
+
+    height: 100%;
+    padding: 0 6px 0 6px;
+    vertical-align: middle;
+
+    border-radius: 6px;
+    margin-right: 10px;
+
+    background-color: #8c8c8c;
+
+    cursor: pointer;
 }

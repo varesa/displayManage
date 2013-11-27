@@ -1,3 +1,6 @@
+import logging
+log = logging.getLogger(__name__)
+
 from pyramid.view import view_config
 
 """
@@ -8,6 +11,22 @@ def my_view(request):
 
 @view_config(route_name='matrix', renderer='templates/matrix.pt')
 def matrix(request):
+    newdata = {}
+    for pair in request.POST.items():
+        log.debug(pair)
+        key = pair[0]
+        """:type : str"""
+        val = pair[1]
+        """:type : str"""
+
+        if val.startswith("cb_"):
+            device, page = val.split("-_-")
+            if not device in newdata.keys():
+                newdata[device] = []
+            newdata[device].append(page)
+
+            log.debug(device + ": " + page)
+
     devices = ['pi1', 'pi2', 'kmarket', 'tori']
     pages = ['ad1', 'ad2', 'nastori', 'other']
 
@@ -17,8 +36,14 @@ def matrix(request):
     for page in pages:
         temp = [page]
         for device in devices:
-            temp.append("<" + device + "|" + page + ">")
+            extra_classes = ''
+            if device in newdata.keys():
+                if page in newdata[device]:
+                    extra_classes += ' checked'
+            temp.append([device + "-_-" + page, extra_classes])
         table.append(temp)
+
+    logging.debug(table)
 
     #return {'table': [['a', 'b'], ['c', 'd'], ['e', 'f']]}
     return {'table': table}
