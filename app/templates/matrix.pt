@@ -81,7 +81,7 @@
                     <tr tal:repeat="row table[1:]">
                         <td>${row[0]}</td>
                         <td tal:repeat="item row[1:]">
-                            <div class="checkbox ${item[1]}" id="cb_${item[0]}" ></div>
+                            <div class="checkbox ${item[1]}" id="cb_${item[0].replace('.', '')}" ></div>
                         </td>
                     </tr>
                 </table>
