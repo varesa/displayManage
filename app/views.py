@@ -20,6 +20,7 @@ def matrix(request):
         """:type : str"""
 
         if val.startswith("cb_"):
+    	    val = val.split('cb_')[1]
             device, page = val.split("-_-")
             if not device in newdata.keys():
                 newdata[device] = []
@@ -33,12 +34,16 @@ def matrix(request):
     table = []
     table.append([''] + devices)
 
+    log.debug(newdata)
+
     for page in pages:
         temp = [page]
         for device in devices:
             extra_classes = ''
             if device in newdata.keys():
+        	log.debug('Device found: ' +device)
                 if page in newdata[device]:
+            	    log.debug('Page ' + page + ' checked for device')
                     extra_classes += ' checked'
             temp.append([device + "-_-" + page, extra_classes])
         table.append(temp)

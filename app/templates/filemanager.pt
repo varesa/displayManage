@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Kuvien hallinta</title>
+        <script type="text/javascript" src="/static/jquery-2.0.3.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/static/common.css">
         <style type="text/css">
 
@@ -12,11 +13,37 @@
             }
 
             #upload {
-                display: block;
                 visibility: hidden;
-                position: fixed;
-                width: 600px;
-                height: 400px;
+
+                display: block;
+                position: absolute;
+
+                width: 500px;
+                height: 350px;
+
+                top: 160px;
+                left: 50%;
+                margin-left: -250px;
+
+                background-color: lightgray;
+            }
+
+            .popup_titlebar {
+                display: block;
+                width: 100%;
+                height: 32px;
+
+                background-color: #a0a0a0;
+            }
+
+            .closebutton {
+                display: block;
+
+                position: absolute;
+                right: 0px;
+                margin: 6px;
+
+                cursor: pointer;
             }
 
         </style>
@@ -26,7 +53,11 @@
             }
 
             function uploadPics() {
+                $("#upload").css("visibility", "visible");
+            }
 
+            function closeUpload() {
+                $("#upload").css("visibility", "hidden");
             }
         </script>
     </head>
@@ -49,6 +80,10 @@
             </div>
         </div>
 
-        <div id="upload"></div>
+        <div id="upload">
+            <div class="popup_titlebar">
+                <div class="closebutton" onclick="closeUpload()"><b>X</b></div>
+            </div>
+        </div>
     </body>
 </html>
