@@ -10,5 +10,6 @@ def main(global_config, **settings):
     config.add_route('matrix', '/')
     config.add_route('files', '/files/')
     config.add_route('upload', '/upload/')
+    config.add_route('get_pages', '/get_pages/')
     config.scan()
     return config.make_wsgi_app()

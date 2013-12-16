@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -7,12 +8,6 @@ from pyramid.view import view_config
 import vars
 
 log = logging.getLogger(__name__)
-
-"""
-@view_config(route_name='home', renderer='templates/mytemplate.pt')
-def my_view(request):
-    return {'project': 'app'}
-"""
 
 @view_config(route_name='matrix', renderer='templates/matrix.pt')
 def matrix(request):
@@ -25,7 +20,7 @@ def matrix(request):
         """:type : str"""
 
         if val.startswith("cb_"):
-    	    val = val.split('cb_')[1]
+            val = val.split('cb_')[1]
             device, page = val.split("-_-")
             if not device in newdata.keys():
                 newdata[device] = []
@@ -33,36 +28,33 @@ def matrix(request):
 
             log.debug(device + ": " + page)
 
+    if not len(newdata) == 0:
+        matrixfile = open(vars.matrixpath, "w")
+        json.dump(newdata, matrixfile)
+        matrixfile.close()
+    else:
+        matrixfile = open(vars.matrixpath, "r")
+        newdata = json.load(matrixfile)
+        matrixfile.close()
+
     devices = ['pi1', 'pi2', 'kmarket', 'tori']
-    #pages = ['ad1', 'ad2', 'nastori', 'other']
-    """pages = []
-    log.debug(pages)
-    for page in os.listdir(vars.imagespath):
-        new = page.replace('.', '')
-        pages.append(new)
-    log.debug(pages)"""
     pages = os.listdir(vars.imagespath)
 
     table = []
     table.append([''] + devices)
-
-    log.debug(newdata)
 
     for page in pages:
         temp = [page]
         for device in devices:
             extra_classes = ''
             if device in newdata.keys():
-        	log.debug('Device found: ' +device)
-                if page in newdata[device]:
-            	    log.debug('Page ' + page + ' checked for device')
+                if page.replace('.', '') in newdata[device]:
                     extra_classes += ' checked'
             temp.append([device + "-_-" + page, extra_classes])
         table.append(temp)
 
     logging.debug(table)
 
-    #return {'table': [['a', 'b'], ['c', 'd'], ['e', 'f']]}
     return {'table': table}
     
 @view_config(route_name='files', renderer='templates/filemanager.pt')
@@ -98,3 +90,28 @@ def upload(request):
 
 
     return Response('OK')
+
+@view_config(route_name='get_pages')
+def get_pages(request):
+    if 'device' not in request.GET.keys():
+	return Response('ERR_DeviceNotSpecified')
+    
+    matrixfile = open(vars.matrixpath, 'r')
+    matrix = json.load(matrixfile)
+    matrixfile.close()
+    
+    if request.GET['device'] not in matrix.keys():
+	return Response('ERR_DeviceNotFound')
+
+    device = request.GET['device']
+    pages = matrix[device]
+
+    files = os.listdir(vars.imagespath)
+    list = []
+    
+    for page in pages:
+	for file in files:
+	    if page == file.replace('.',''):
+		list.append(vars.imagesurl + file)
+    list = '\n'.join(list)
+    return Response(list)
