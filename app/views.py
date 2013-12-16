@@ -1,6 +1,7 @@
 import logging
 import os
 import json
+import urllib
 
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -8,6 +9,11 @@ from pyramid.view import view_config
 import vars
 
 log = logging.getLogger(__name__)
+
+def encode2css(s):
+    s = s.replace('%', '')
+    s = s.replace('.', '')
+    return s
 
 @view_config(route_name='matrix', renderer='templates/matrix.pt')
 def matrix(request):
@@ -37,14 +43,15 @@ def matrix(request):
         newdata = json.load(matrixfile)
         matrixfile.close()
 
-    devices = ['pi1', 'pi2', 'kmarket', 'tori']
+    devices = ['a', 'b', 'c', 'demo']
     pages = os.listdir(vars.imagespath)
 
     table = []
     table.append([''] + devices)
 
     for page in pages:
-        temp = [page]
+	temp = [urllib.url2pathname(page)]
+	page = encode2css(page)
         for device in devices:
             extra_classes = ''
             if device in newdata.keys():
@@ -71,7 +78,8 @@ def upload(request):
         filename = file.filename
         filedata = file.file
 
-        filename = filename.split("/")[-1] # Remove ../'s and other nasty things
+        #filename = filename.split("/")[-1] # Remove ../'s and other nasty things
+        filename = urllib.pathname2url(filename)
         if len(filename) == 0:
             return Response('Invalid filename')
 
@@ -111,7 +119,7 @@ def get_pages(request):
     
     for page in pages:
 	for file in files:
-	    if page == file.replace('.',''):
-		list.append(vars.imagesurl + file)
-    list = '\n'.join(list)
+	    if page == encode2css(file):
+		list.append(vars.imagesurl + urllib.pathname2url(file)) # Encode the encoded filename, to pass the %-characters to the server
+    list = '\n'.join(list) + '\n'
     return Response(list)
