@@ -69,6 +69,7 @@
         <div id="container">
             <div id="content">
                 <div id="title"><h2>Näytettävien sivujen valinta</h2></div>
+                <div id="nav"><a href="/">Matriisi</a> | <a href="/files/">Kuvien hallinta</a> |  Näyttöjen hallinta</div>
                 <div id="actions">
                     <div class="button" onclick="saveAndRefresh()">Tallenna</div>
                     <div class="button" onclick="window.location.href='/'">Hylkää muutokset</div>

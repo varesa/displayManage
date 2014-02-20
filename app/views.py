@@ -5,6 +5,7 @@ import urllib
 
 from pyramid.response import Response
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
 
 import vars
 
@@ -66,9 +67,12 @@ def matrix(request):
     
 @view_config(route_name='files', renderer='templates/filemanager.pt')
 def files(request):
-    dir = vars.imagespath
-    files = os.listdir(dir)
-    return {'files': files}
+    if 'action' in request.GET.keys() and request.GET['action'] == 'delete':
+	for key in request.GET.keys():
+	    if(key.startswith('remove_')):
+		os.remove(vars.imagespath + key[7:])
+	return HTTPFound(location=request.application_url + "/files/")
+    return {'files': os.listdir(vars.imagespath)}
 
 
 @view_config(route_name='upload')
@@ -123,3 +127,4 @@ def get_pages(request):
 		list.append(vars.imagesurl + urllib.pathname2url(file)) # Encode the encoded filename, to pass the %-characters to the server
     list = '\n'.join(list) + '\n'
     return Response(list)
+    

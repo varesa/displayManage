@@ -67,7 +67,8 @@
     	    );
         
             function deletePics() {
-
+		document.forms['managefiles'].elements['action'].value = "delete";
+		document.forms['managefiles'].submit();
             }
 
             function uploadPics() {
@@ -83,18 +84,24 @@
     <body>
         <div id="container">
             <div id="content">
-                <div id="title"><h2>Kuvien hallinta</h2></div>
+            	<div id="title"><h2>Kuvien hallinta</h2></div>
+                <div id="nav"><a href="/">Matriisi</a> | <a href="/files/">Kuvien hallinta</a> | Näyttöjen hallinta</div>
+                <br><br><br>
                 <div id="actions">
                     <div id="add" class="button" onclick="uploadPics()">Lisää kuvia</div>
                     <div id="remove" class="button" onclick="deletePics()">Poista valitut</div>
                 </div>
                 <br><br>
+                
                 <div id="files">
-                    <table>
-                        <tr tal:repeat="filename files">
-                            <td><input type="checkbox" name="remove_${filename}" id="cb_${filename}"></td><td><label for="cb_${filename}">${filename}</label></td>
-                        </tr>
-                    </table>
+            	    <form id="managefiles" method="GET" action="/files/">
+            		<input type="hidden" name="action" value=""></input>
+                        <table>
+	                    <tr tal:repeat="filename files">
+    	    	                <td><input type="checkbox" name="remove_${filename}" id="cb_${filename}"></td><td><label for="cb_${filename}">${filename}</label></td>
+    		            </tr>
+    	                </table>
+    	            </form>
                 </div>
             </div>
         </div>
