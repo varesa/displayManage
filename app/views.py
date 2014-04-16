@@ -44,7 +44,7 @@ def matrix(request):
         newdata = json.load(matrixfile)
         matrixfile.close()
 
-    devices = ['a', 'b', 'c', 'demo']
+    devices = ['kirkko', 'paju', 'liike', 'kauppa', 'demo', 'test']
     pages = os.listdir(vars.imagespath)
 
     table = []
@@ -125,6 +125,7 @@ def get_pages(request):
 	for file in files:
 	    if page == encode2css(file):
 		list.append(vars.imagesurl + urllib.pathname2url(file)) # Encode the encoded filename, to pass the %-characters to the server
+    list.sort()
     list = '\n'.join(list) + '\n'
     return Response(list)
     
