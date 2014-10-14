@@ -55,7 +55,7 @@ def get_pages(request):
     for page in pages:
         for file in files:
             if page == encode2css(file):
-                list.append(vars.imagesurl + urllib.request.pathname2url(file)) # Encode the encoded filename, to pass the %-characters to the server
+                list.append(vars.imagesurl + urllib.request.pathname2url(file))
     list.sort()
     list = '\n'.join(list) + '\n'
 
