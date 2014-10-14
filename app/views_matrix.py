@@ -47,7 +47,7 @@ def matrix(request):
         matrixfile.close()
 
     devices = ['kirkko', 'paju', 'liike', 'kauppa', 'demo', 'test']
-    pages = os.listdir(vars.imagespath)
+    pages = [f for f in os.listdir(vars.imagespath) if '.zsync' not in f]
 
     table = []
     table.append([''] + devices)

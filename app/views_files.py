@@ -20,13 +20,13 @@ def files(request):
                 os.remove(vars.imagespath + key[7:])
                 os.remove(vars.imagespath + key[7:] + '.zsync')
         return HTTPFound(location=request.application_url + "/files/")
-    return {'files': os.listdir(vars.imagespath)}
+    return {'files': [f for f in os.listdir(vars.imagespath) if '.zsync' not in f]}
 
 
 def write_to_file(filepath, file_contents):
     tmp_filepath = filepath + '~'
 
-    fout = open(tmp_filepath, 'w')
+    fout = open(tmp_filepath, 'wb')
     file_contents.seek(0)
     while True:
         data = file_contents.read(2 << 16)
@@ -57,6 +57,6 @@ def upload(request):
         file_path = os.path.join(vars.imagespath, filename)
         write_to_file(file_path, file_contents)
 
-        subprocess.call(['/usr/local/bin/zsyncmake', file_path])
+        subprocess.call(['/usr/local/bin/zsyncmake', file_path], cwd=vars.imagespath)
 
     return Response('OK')
