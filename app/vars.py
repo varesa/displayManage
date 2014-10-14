@@ -1,9 +1,10 @@
 import os
 
-basepath = "/var/www/data/displays/"
+basepath = "/var/www/python/displaymanage/"
 
-imagespath = os.path.join(basepath, "images/")
-matrixpath = os.path.join(basepath, "matrix.json")
+imagespath = os.path.join(basepath, "data", "images/")
+matrixpath = os.path.join(basepath, "data", "matrix.json")
 logpath = os.path.join(basepath, "logs/")
 
 imagesurl = "http://images.nastori.finbit.dy.fi/"
+rsyncurl = "rsync://abc/"

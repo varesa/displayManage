@@ -9,7 +9,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
-import vars
+from . import vars
 
 log = logging.getLogger(__name__)
 
@@ -53,8 +53,8 @@ def matrix(request):
     table.append([''] + devices)
 
     for page in pages:
-	temp = [urllib.url2pathname(page)]
-	page = encode2css(page)
+        temp = [urllib.request.url2pathname(page)]
+        page = encode2css(page)
         for device in devices:
             extra_classes = ''
             if device in newdata.keys():
@@ -70,10 +70,10 @@ def matrix(request):
 @view_config(route_name='files', renderer='templates/filemanager.pt')
 def files(request):
     if 'action' in request.GET.keys() and request.GET['action'] == 'delete':
-	for key in request.GET.keys():
-	    if(key.startswith('remove_')):
-		os.remove(vars.imagespath + key[7:])
-	return HTTPFound(location=request.application_url + "/files/")
+        for key in request.GET.keys():
+            if(key.startswith('remove_')):
+                os.remove(vars.imagespath + key[7:])
+        return HTTPFound(location=request.application_url + "/files/")
     return {'files': os.listdir(vars.imagespath)}
 
 
@@ -85,7 +85,7 @@ def upload(request):
         filedata = file.file
 
         #filename = filename.split("/")[-1] # Remove ../'s and other nasty things
-        filename = urllib.pathname2url(filename)
+        filename = urllib.request.pathname2url(filename)
         if len(filename) == 0:
             return Response('Invalid filename')
 
@@ -107,45 +107,45 @@ def upload(request):
 
 def log_connection(name):
     try: # Do not crash on logging errors
-	now = datetime.datetime.utcnow()
-	
-	date = now.isocalendar()
-	year = date[0]
-	week = date[1]
-	
-	time = calendar.timegm(now.timetuple())
-	
-	filename = os.path.join(vars.logpath, str(year) + "-" + str(week)+".log")
-	file = open(filename, 'a')
-	file.write(name + ": " + str(time) + "\n")
+        now = datetime.datetime.utcnow()
+
+        date = now.isocalendar()
+        year = date[0]
+        week = date[1]
+
+        time = calendar.timegm(now.timetuple())
+
+        filename = os.path.join(vars.logpath, str(year) + "-" + str(week)+".log")
+        file = open(filename, 'a')
+        file.write(name + ": " + str(time) + "\n")
     except:
-	print("Error in acces-logging!")
+        print("Error in acces-logging!")
 
 @view_config(route_name='get_pages')
 def get_pages(request):
     if 'device' not in request.GET.keys():
-	return Response('ERR_DeviceNotSpecified')
-    
+        return Response('ERR_DeviceNotSpecified')
+
     matrixfile = open(vars.matrixpath, 'r')
     matrix = json.load(matrixfile)
     matrixfile.close()
-    
+
     if request.GET['device'] not in matrix.keys():
-	return Response('ERR_DeviceNotFound')
+        return Response('ERR_DeviceNotFound')
 
     device = request.GET['device']
     pages = matrix[device]
 
     files = os.listdir(vars.imagespath)
     list = []
-    
+
     for page in pages:
-	for file in files:
-	    if page == encode2css(file):
-		list.append(vars.imagesurl + urllib.pathname2url(file)) # Encode the encoded filename, to pass the %-characters to the server
+        for file in files:
+            if page == encode2css(file):
+                list.append(vars.imagesurl + urllib.request.pathname2url(file)) # Encode the encoded filename, to pass the %-characters to the server
     list.sort()
     list = '\n'.join(list) + '\n'
-    
+
     log_connection(device)
     return Response(list)
-    
+
