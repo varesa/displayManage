@@ -21,20 +21,17 @@ def encode2css(s):
 
 
 def log_connection(name):
-    try: # Do not crash on logging errors
-        now = datetime.datetime.utcnow()
+    now = datetime.datetime.utcnow()
 
-        date = now.isocalendar()
-        year = date[0]
-        week = date[1]
+    date = now.isocalendar()
+    year = date[0]
+    week = date[1]
 
-        time = calendar.timegm(now.timetuple())
+    time = calendar.timegm(now.timetuple())
 
-        filename = os.path.join(vars.logpath, str(year) + "-" + str(week)+".log")
-        file = open(filename, 'a')
-        file.write(name + ": " + str(time) + "\n")
-    except:
-        print("Error in acces-logging!")
+    filename = os.path.join(vars.logpath, str(year) + "-" + str(week)+".log")
+    file = open(filename, 'a')
+    file.write(name + ": " + str(time) + "\n")
 
 
 @view_config(route_name='get_pages')

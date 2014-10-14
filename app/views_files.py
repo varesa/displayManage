@@ -24,29 +24,38 @@ def files(request):
     return {'files': os.listdir(vars.imagespath)}
 
 
+def write_to_file(filepath, file_contents):
+    tmp_filepath = filepath + '~'
+
+    fout = open(tmp_filepath, 'w')
+    file_contents.seek(0)
+    while True:
+        data = file_contents.read(2 << 16)
+        if not data:
+            break
+        fout.write(data)
+
+    fout.close()
+    os.rename(tmp_filepath, filepath)
+
+
+ERR_INVALID_FILENAME = "Virheellinen tiedostonimi."
+
+
 @view_config(route_name='upload')
 def upload(request):
-    files = request.POST.getall('file')
-    for file in files:
+    POSTfiles = request.POST.getall('file')
+    for file in POSTfiles:
         filename = file.filename
-        filedata = file.file
+        file_contents = file.file
 
-        #filename = filename.split("/")[-1] # Remove ../'s and other nasty things
+        filename = filename.split("/")[-1] # Remove ../'s and other nasty things
         filename = urllib.request.pathname2url(filename)
+
         if len(filename) == 0:
-            return Response('Invalid filename')
+            return Response(ERR_INVALID_FILENAME)
 
-        tmp_filename = filename + '~'
-        fout = open(os.path.join(vars.imagespath, tmp_filename), 'w')
-
-        filedata.seek(0)
-        while True:
-            data = filedata.read(2<<16)
-            if not data:
-                break
-            fout.write(data)
-
-        fout.close()
-        os.rename(os.path.join(vars.imagespath, tmp_filename), os.path.join(vars.imagespath, filename))
+        file_path = os.path.join(vars.imagespath, filename)
+        write_to_file(file_path, file_contents)
 
     return Response('OK')
