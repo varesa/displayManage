@@ -1,9 +1,7 @@
 import logging
 import os
-import json
 import urllib
-import datetime
-import calendar
+import subprocess
 
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -20,6 +18,7 @@ def files(request):
         for key in request.GET.keys():
             if(key.startswith('remove_')):
                 os.remove(vars.imagespath + key[7:])
+                os.remove(vars.imagespath + key[7:] + '.zsync')
         return HTTPFound(location=request.application_url + "/files/")
     return {'files': os.listdir(vars.imagespath)}
 
@@ -57,5 +56,7 @@ def upload(request):
 
         file_path = os.path.join(vars.imagespath, filename)
         write_to_file(file_path, file_contents)
+
+        subprocess.call(['/usr/local/bin/zsyncmake', file_path])
 
     return Response('OK')
