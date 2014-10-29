@@ -11,6 +11,7 @@ requires = [
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'waitress',
+    'boto'
     ]
 
 setup(name='app',
