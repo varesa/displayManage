@@ -8,21 +8,23 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
 from . import vars
-from s3_connection import get_s3_connection
+from .s3_connection import get_s3_connection
 
 log = logging.getLogger(__name__)
 
 
 @view_config(route_name='files', renderer='templates/filemanager.pt')
 def files(request):
-    s3 = get_s3_connection()
+    bucket = get_s3_connection().get_bucket(vars.imagesbucket)
     if 'action' in request.GET.keys() and request.GET['action'] == 'delete':
         for key in request.GET.keys():
             if(key.startswith('remove_')):
                 os.remove(vars.imagespath + key[7:])
-                os.remove(vars.imagespath + key[7:] + '.zsync')
+                #os.remove(vars.imagespath + key[7:] + '.zsync')
         return HTTPFound(location=request.application_url + "/files/")
-    return {'files': [f for f in os.listdir(vars.imagespath) if '.zsync' not in f]}
+    
+    files = bucket.get_all_keys()
+    return {'files': files}
 
 
 def write_to_file(filepath, file_contents):

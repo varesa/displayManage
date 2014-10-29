@@ -6,4 +6,5 @@ imagespath = os.path.join(basepath, "data", "images/")
 matrixpath = os.path.join(basepath, "data", "matrix.json")
 logpath = os.path.join(basepath, "logs/")
 
-imagesurl = "http://images.nastori.finbit.dy.fi/"
+imagesbucket = "nastorimedia"
+imagesurl = "s3://" + imagesbucket
