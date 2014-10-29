@@ -7,6 +7,8 @@ config_file = "displaymanage.conf"
 def initialize_config():
     with open(config_file, 'w') as conf:
             conf.writelines(("s3_access: <access key>", "s3_secret: <secret>"))
+    print("Config file created (" + config_file + "), please fill in values")
+    sys.exit(1)
 
 
 def get_s3_credentials():
@@ -18,9 +20,9 @@ def get_s3_credentials():
             for line in conf:
                 key, value = line.split(':', maxsplit=1)
                 if key == 's3_access':
-                    s3_access = value
+                    s3_access = value.strip()
                 elif key == 's3_secret':
-                    s3_secret = value
+                    s3_secret = value.strip()
 
             if s3_access and s3_secret:
                 return s3_access, s3_secret
