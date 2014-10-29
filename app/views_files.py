@@ -8,12 +8,14 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
 from . import vars
+from s3_connection import get_s3_connection
 
 log = logging.getLogger(__name__)
 
 
 @view_config(route_name='files', renderer='templates/filemanager.pt')
 def files(request):
+    s3 = get_s3_connection()
     if 'action' in request.GET.keys() and request.GET['action'] == 'delete':
         for key in request.GET.keys():
             if(key.startswith('remove_')):
