@@ -8,6 +8,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
 from . import vars
+from .s3_connection import get_s3_connection
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +23,6 @@ def encode2css(s):
 def matrix(request):
     newdata = {}
     for pair in request.POST.items():
-        log.debug(pair)
         key = pair[0]
         """:type : str"""
         val = pair[1]
@@ -35,8 +35,6 @@ def matrix(request):
                 newdata[device] = []
             newdata[device].append(page)
 
-            log.debug(device + ": " + page)
-
     if not len(newdata) == 0:
         matrixfile = open(vars.matrixpath, "w")
         json.dump(newdata, matrixfile)
@@ -47,7 +45,10 @@ def matrix(request):
         matrixfile.close()
 
     devices = ['kirkko', 'paju', 'liike', 'kauppa', 'demo', 'test']
-    pages = [f for f in os.listdir(vars.imagespath) if '.zsync' not in f]
+    
+    bucket = get_s3_connection().get_bucket(vars.imagesbucket)
+    
+    pages = [key.key for key in bucket.list()]
 
     table = []
     table.append([''] + devices)

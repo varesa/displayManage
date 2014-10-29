@@ -10,6 +10,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
 from . import vars
+from .s3_connection import get_s3_connection
 
 log = logging.getLogger(__name__)
 
@@ -49,7 +50,10 @@ def get_pages(request):
     device = request.GET['device']
     pages = matrix[device]
 
-    files = os.listdir(vars.imagespath)
+
+    bucket = get_s3_connection().get_bucket(vars.imagesbucket)
+    files = [key.key for key in bucket.list()]
+    
     list = []
 
     for page in pages:
