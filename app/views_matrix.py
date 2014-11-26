@@ -44,7 +44,7 @@ def matrix(request):
         newdata = json.load(matrixfile)
         matrixfile.close()
 
-    devices = ['kirkko', 'paju', 'liike', 'kauppa', 'demo', 'test']
+    devices = ['aktiivi', 'kirkko', 'paju', 'super', 'tervevys', 'solina', 'demo', 'test']
     
     bucket = get_s3_connection().get_bucket(vars.imagesbucket)
     
