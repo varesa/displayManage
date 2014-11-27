@@ -59,7 +59,7 @@ def get_pages(request):
     for page in pages:
         for file in files:
             if page == encode2css(file):
-                list.append(vars.imagesurl + urllib.request.pathname2url(file))
+                list.append(vars.imagesurl + file)
     list.sort()
     list = '\n'.join(list) + '\n'
 
