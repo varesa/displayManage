@@ -31,8 +31,15 @@ def log_connection(name):
     time = calendar.timegm(now.timetuple())
 
     filename = os.path.join(vars.logpath, str(year) + "-" + str(week)+".log")
+    if not os.path.isfile(filename):
+        newweek = True
+    else:
+        newweek = False
     file = open(filename, 'a')
     file.write(name + ": " + str(time) + "\n")
+    if newweek:
+        os.chmod(filename, 0o0644)
+    
 
 
 @view_config(route_name='get_pages')
