@@ -7,6 +7,7 @@
         <script type="text/javascript" src="/static/jquery-2.0.3.min.js"></script>
         <script type="text/javascript" src="/static/bootstrap.min.js"></script>
 
+        <link rel="stylesheet" href="/static/common.css">
         <link rel="stylesheet" href="/static/matrix_table.css">
 
         <script type="text/javascript">
@@ -36,22 +37,8 @@
 
     </head>
     <body onload="init()">
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand">Nastori</a>
-                </div>
-                <div id="navbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a>Matriisi</a></li>
-                        <li><a>Kuvat</a></li>
-                        <li><a>Näytöt</a></li>
-                        <li><a>Lokit</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="container" style="padding-top: 50px;">
+        <nav metal:use-macro="load: nav.pt"></nav>
+        <div class="container">
             <br>
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">

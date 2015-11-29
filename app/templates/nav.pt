@@ -1,0 +1,15 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand">Nastori</a>
+        </div>
+        <div id="navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Matriisi</a></li>
+                <li><a href="/files/">Kuvat</a></li>
+                <li><a>Näytöt</a></li>
+                <li><a>Lokit</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
