@@ -8,8 +8,11 @@ def main(global_config, **settings):
     config.include('pyramid_chameleon')
     config.add_static_view('static', 'static', cache_max_age=3600)
 
-    # Image - deice selection
+    # Image - device selection
     config.add_route('matrix', '/')
+
+    # Device management
+    config.add_route('devices', '/devices/')
 
     # Image upload/management
     config.add_route('files', '/files/')

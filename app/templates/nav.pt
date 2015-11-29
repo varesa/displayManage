@@ -7,7 +7,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Matriisi</a></li>
                 <li><a href="/files/">Kuvat</a></li>
-                <li><a>Näytöt</a></li>
+                <li><a href="/devices/">Näytöt</a></li>
                 <li><a>Lokit</a></li>
             </ul>
         </div>

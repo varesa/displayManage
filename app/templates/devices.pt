@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Näytöt</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css">
+
+    <script type="text/javascript" src="/static/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/static/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/common.css">
+</head>
+<body>
+    <nav metal:use-macro="load: nav.pt"/>
+
+    <div class="container">
+        <br>
+        <form method="post">
+            <input type="hidden" name="action" value="remove">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#createModal">Lisää uusi</button>
+                </div>
+                <div class="btn-group">
+                    <button disabled class="btn btn-default" style="color: transparent; cursor: default">Spacer</button>
+                </div>
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-default" value="Poista"></input>
+                </div>
+            </div>
+            <br>
+            <div class="panel">
+                <table class="table">
+                    <tr tal:repeat="device devices">
+                        <td>
+                            <div class="checkbox" style="margin: 4px">
+                                <label><input type="checkbox" name="cb-${device}"> ${device}</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="modal" id="createModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <button type="button" class="close" data-toggle="modal" data-target="#createModal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Luo uusi</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" method="post">
+                        <input type="hidden" name="action" value="create">
+                        <input class="form-control" type="text" name="name"> <input class="btn btn-default pull-right" type="submit" value="Luo">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
