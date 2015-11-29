@@ -1,14 +1,13 @@
 import logging
-import os
-import json
 import urllib
 
-from pyramid.response import Response
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
 
-from . import vars
-from .s3_connection import get_s3_connection
+from app.devicesWrapper import DevicesWrapper
+from app.matrixWrapper import MatrixWrapper
+from app import vars
+from app.s3_connection import get_s3_connection
+
 
 log = logging.getLogger(__name__)
 
@@ -31,26 +30,22 @@ def matrix(request):
         if val.startswith("cb_"):
             val = val.split('cb_')[1]
             device, page = val.split("-_-")
-            if not device in newdata.keys():
+            if device not in newdata.keys():
                 newdata[device] = []
             newdata[device].append(page)
 
-    if not len(newdata) == 0:
-        matrixfile = open(vars.matrixpath, "w")
-        json.dump(newdata, matrixfile)
-        matrixfile.close()
+    if len(newdata):
+        MatrixWrapper().write(newdata)
     else:
-        matrixfile = open(vars.matrixpath, "r")
-        newdata = json.load(matrixfile)
-        matrixfile.close()
+        newdata = MatrixWrapper().get()
 
-    devices = ['aktiivi', 'kirkko', 'paju', 'super', 'tervevys', 'solina', 'demo', 'test']
+    devices = DevicesWrapper().get()
     
     bucket = get_s3_connection().get_bucket(vars.imagesbucket)
     
     pages = [key.key for key in bucket.list()]
 
-    table = []
+    table = list()
     table.append([''] + devices)
 
     for page in pages:

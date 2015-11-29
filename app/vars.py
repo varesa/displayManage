@@ -1,11 +1,19 @@
 import os
 
+# Paths
+
 basepath = "/displaymanage/"
 
-#imagespath = os.path.join(basepath, "data", "images/")
-matrixpath = os.path.join(basepath, "data", "matrix.json")
+datapath = os.path.join(basepath, "data")
+
+matrixpath = os.path.join(datapath, "matrix.json")
+devicespath = os.path.join(datapath, "devices.json")
+
 logpath = os.path.join(basepath, "logs/")
+
+# S3
 
 imagesbucket = "nastorimedia"
 imagesurl = "s3://" + imagesbucket + "/"
 
+s3authfile = os.path.join(datapath, "s3credentials.conf")
