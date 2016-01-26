@@ -8,7 +8,7 @@
                 <li><a href="/">Matriisi</a></li>
                 <li><a href="/files/">Kuvat</a></li>
                 <li><a href="/devices/">Näytöt</a></li>
-                <li><a href="http://nastorilogs.esav.fi/">Lokit</a></li>
+                <li><a href="/static/logviewer/index.html">Lokit</a></li>
             </ul>
         </div>
     </div>
