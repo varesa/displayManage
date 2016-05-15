@@ -24,6 +24,14 @@ echo $tmp >> /etc/resolv.conf
 
 /etc/init.d/hostname.sh
 
-echo "213.139.165.194 puppet" >> /etc/hosts
+cat <<EOF > /etc/hosts
+127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+127.0.1.1       $hostname $hostname.nastori
+213.139.165.194 puppet
+EOF
 
 puppet agent -t
