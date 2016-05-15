@@ -11,7 +11,7 @@ cat <<EOF >/etc/dhcp/dhclient.conf
 option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
 
 send host-name = gethostname();
-supersede domain-name "fugue.com home.vix.com";
+supersede domain-name "nastori";
 request subnet-mask, broadcast-address, time-offset, routers,
         domain-name-servers, domain-search, interface-mtu,
         rfc3442-classless-static-routes, ntp-servers;
