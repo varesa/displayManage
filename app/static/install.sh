@@ -1,13 +1,29 @@
 #!/bin/env bash
 
+echo "Enter hostname (e.g. rpi01)"
+read hostname
+
 apt-get update && apt-get install -y git puppet
 
-git clone https://github.com/varesa/puppet_nastori_system.git /etc/puppet/modules/nastori_system/
-git clone https://github.com/varesa/puppet_nastori_viewer.git /etc/puppet/modules/nastori_viewer/
-git clone https://github.com/varesa/puppet_nastori_connection.git /etc/puppet/modules/nastori_connection/
+echo $hostname > /etc/hostname
 
-puppet module install puppetlabs-inifile
-puppet module install puppetlabs-vcsrepo
+cat <<EOF >/etc/dhcp/dhclient.conf
+option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
 
-puppet apply -e "include nastori_system"
-puppet apply -e "include nastori_viewer"
+send host-name = gethostname();
+supersede domain-name "fugue.com home.vix.com";
+request subnet-mask, broadcast-address, time-offset, routers,
+        domain-name-servers, domain-search, interface-mtu,
+        rfc3442-classless-static-routes, ntp-servers;
+EOF
+
+tmp=$(cat /etc/resolv.conf | grep nameserver)
+
+echo "domain nastori" > /etc/resolv.conf
+echo $tmp >> /etc/resolv.conf
+
+/etc/init.d/hostname.sh
+
+echo "213.139.165.194 puppet" >> /etc/hosts
+
+puppet agent -t
