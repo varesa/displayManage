@@ -3,7 +3,7 @@
 echo "Enter hostname (e.g. rpi01)"
 read hostname
 
-apt-get update && apt-get install -y git puppet
+apt-get update && apt-get install -y git puppet vim
 
 echo $hostname > /etc/hostname
 
