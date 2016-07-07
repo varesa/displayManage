@@ -34,4 +34,5 @@ ff02::2         ip6-allrouters
 213.139.165.194 puppet
 EOF
 
+puppet agent --enable
 puppet agent -t
