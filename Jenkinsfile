@@ -1,4 +1,13 @@
 node {
+    properties([
+        pipelineTriggers([
+            upstream(
+                threshold: 'SUCCESS',
+                upstreamProjects: '/docker_base/docker_python3'
+            )
+        ])
+    ])
+
     checkout scm
 
     /* Registry + credentials ID from jenkins */
